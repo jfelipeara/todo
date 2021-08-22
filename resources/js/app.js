@@ -6,39 +6,49 @@
 
 require("./bootstrap");
 
+import axios from "axios";
 /**
  * Next, we will create a fresh React component instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
+import Login from "./components/Login";
 import TodoList from "./components/TodoList";
 function App() {
-    const [todos, setTodos] = useState([
-        {
-            title: "title one",
-            date: "12/21/1994",
-            time: "18:00",
-            text: "lorem ipsum",
-        },
-        {
-            title: "title two",
-            date: "12/21/1994",
-            time: "1:00",
-            text: "lorem ipsum testa",
-        },
-    ]);
+    const [todos, setTodos] = useState([]);
+    const [user, setuser] = useState(null);
 
-    addTodo = (event) => {
+    useEffect(() => {
+        if (user) {
+            axios.get("/api/todos").then(({ data }) => setTodos(data));
+            Echo.private(`App.Models.User.${user.id}`).listen(
+                ".TodoCreated",
+                (e) => {
+                    setTodos((prevState) => [...prevState, e.model]);
+                }
+            );
+        }
+    }, [user]);
+
+    function login(user) {
+        setuser(user);
+    }
+
+    function addTodo(todoItem) {
         event.preventDefault();
-        setTodos((prevState) => [...todos, {}]);
-    };
+        axios.post("/api/todos", todoItem).then(() => {});
+    }
 
     return (
         <div className="flex bg-white w-1/3  border-solid  border-2 border-gray-200 rounded-md">
-            <TodoList items={todos} />
+            {user ? (
+                <TodoList items={todos} addTodo={addTodo} />
+            ) : (
+                <Login login={login} />
+            )}
         </div>
     );
 }

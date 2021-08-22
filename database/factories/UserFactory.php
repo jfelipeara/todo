@@ -44,4 +44,16 @@ class UserFactory extends Factory
             ];
         });
     }
+
+    /**
+     * Configure the model factory.
+     *
+     * @return $this
+     */
+    public function configure()
+    {
+        return $this->afterCreating(function (User $user) {
+            $user->createToken('authToken');
+        });
+    }
 }
