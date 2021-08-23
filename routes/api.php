@@ -21,4 +21,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('/login', LoginController::class);
-Route::resource('todos', TodoController::class);
+// add auth guard
+Route::middleware(['auth:api'])->group(function () {
+    Route::resource('todos', TodoController::class);
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+});

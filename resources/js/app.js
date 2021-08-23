@@ -6,6 +6,7 @@
 
 require("./bootstrap");
 
+import { data } from "autoprefixer";
 import axios from "axios";
 /**
  * Next, we will create a fresh React component instance and attach it to
@@ -13,43 +14,39 @@ import axios from "axios";
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
+import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
 import Login from "./components/Login";
 import TodoList from "./components/TodoList";
 function App() {
-    const [todos, setTodos] = useState([]);
-    const [user, setuser] = useState(null);
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
-        if (user) {
-            axios.get("/api/todos").then(({ data }) => setTodos(data));
-            Echo.private(`App.Models.User.${user.id}`).listen(
-                ".TodoCreated",
-                (e) => {
-                    setTodos((prevState) => [...prevState, e.model]);
-                }
-            );
+        const token = localStorage.getItem("token");
+        if (token) {
+            axios.get("/api/user").then(({ data }) => {
+                setUser(data);
+            });
         }
-    }, [user]);
+    }, []);
 
     function login(user) {
-        setuser(user);
-    }
-
-    function addTodo(todoItem) {
-        event.preventDefault();
-        axios.post("/api/todos", todoItem).then(() => {});
+        setUser(user);
     }
 
     return (
-        <div className="flex bg-white w-1/3  border-solid  border-2 border-gray-200 rounded-md">
-            {user ? (
-                <TodoList items={todos} addTodo={addTodo} />
-            ) : (
-                <Login login={login} />
-            )}
-        </div>
+        <>
+            <ReactNotification />
+            <div className="flex bg-white w-1/3  border-solid  border-2 border-gray-200 rounded-md justify-content-center">
+                {user ? (
+                    <TodoList channelId={user.id} />
+                ) : (
+                    <Login login={login} />
+                )}
+            </div>
+        </>
     );
 }
 

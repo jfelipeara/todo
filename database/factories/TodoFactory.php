@@ -25,7 +25,7 @@ class TodoFactory extends Factory
             'title' => $this->faker->sentence(4),
             'text' => $this->faker->sentence,
             'date' => now()->toDate(),
-            'time' => now()->addHour()->toTimeString(),
+            'time' => now()->addMinutes(10)->toTimeString(),
         ];
     }
 }

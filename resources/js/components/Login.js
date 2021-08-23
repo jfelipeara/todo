@@ -10,7 +10,6 @@ const login = (props) => {
             axios.post("/api/login", { email, password }).then(({ data }) => {
                 localStorage.setItem("token", data.access_token);
                 axios.get("/api/user").then(({ data }) => {
-                    console.log(data);
                     props.login(data);
                 });
             });

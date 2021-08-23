@@ -2,8 +2,12 @@
 
 namespace App\Console;
 
+use App\Models\Todo;
+use App\Models\User;
+use App\Notifications\TodoCompleted;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Notification;
 
 class Kernel extends ConsoleKernel
 {
@@ -24,7 +28,16 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->call(function() {
+            $now = now();
+            $todos = Todo::whereDate('date', $now->toDateString())
+                ->whereTime('time', $now->toTimeString())
+                ->get();
+            foreach ($todos as $todo) {
+                $users = User::all();
+                Notification::send($users, new TodoCompleted($todo));
+            }
+        })->everyMinute();
     }
 
     /**
