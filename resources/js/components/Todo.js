@@ -34,7 +34,10 @@ const Todo = ({ todo, removeTodo, editTodo }) => {
     }
 
     return (
-        <li onDoubleClick={() => setIsEditing(true)} className="p-4">
+        <li
+            onDoubleClick={() => setIsEditing(true)}
+            className={`p-4 ${todo.isComplete ? "bg-green-100" : ""}`}
+        >
             <InputToggle
                 isEditing={isEditing}
                 setData={setTitle}

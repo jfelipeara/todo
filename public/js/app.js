@@ -10907,7 +10907,7 @@ var Todo = function Todo(_ref) {
     onDoubleClick: function onDoubleClick() {
       return setIsEditing(true);
     },
-    className: "p-4",
+    className: "p-4 ".concat(todo.isComplete ? "bg-green-100" : ""),
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_InputToggle__WEBPACK_IMPORTED_MODULE_2__.default, {
       isEditing: isEditing,
       setData: setTitle,

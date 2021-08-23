@@ -17,8 +17,12 @@ class TodoCollection extends ResourceCollection
     {
         $todos = $this->collection->map(function($todo) {
             $onTime = Carbon::parse($todo->time)->lt(Carbon::parse(now()->toTimeString()));
-            if ($todo->date->lte(now()->startOfDay()) && $onTime) {
+            if ($todo->date->lt(now()->startOfDay())) {
                 $todo->isComplete = true;
+            } else if ($todo->date->eq(now()->startOfDay())) {
+                if ($onTime) {
+                    $todo->isComplete = true;
+                }
             } else {
                 $todo->isComplete = false;
             }
