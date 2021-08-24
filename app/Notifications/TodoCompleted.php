@@ -43,6 +43,7 @@ class TodoCompleted extends Notification
     public function toArray($notifiable)
     {
         return [
+            'notification_id' => $this->id,
             'todo_id' => $this->todo->id,
             'title' => $this->todo->title,
             'text' => $this->todo->text,

@@ -1,6 +1,6 @@
 ## Project
-copy .env.example to .env;
-
+copy .env.example to .env
+Remmeber to change the timezone in config/app
 this project uses laravel sail, install everything as follows:
 ``` 
 docker run --rm \
@@ -14,7 +14,7 @@ start the server:
 ```
 sail up -d
 ```
-Run the followingf commands:
+Run the following commands:
 ```
 sail art migrate:fresh
 sail art passport:install

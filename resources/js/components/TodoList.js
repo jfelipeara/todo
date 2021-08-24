@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { store } from "react-notifications-component";
 import Todo from "./Todo";
 import TodoForm from "./TodoForm";
@@ -26,31 +26,47 @@ const TodoList = (props) => {
                 animationIn: ["animate__animated", "animate__fadeIn"],
                 animationOut: ["animate__animated", "animate__fadeOut"],
             });
+
+            axios
+                .post("api/notifications", { id: data.id })
+                .catch((error) => console.log(error));
         };
-        axios.get("/api/todos").then(({ data }) => {
-            setTodos(data.data);
-        });
+        axios
+            .get("/api/todos")
+            .then(({ data }) => {
+                setTodos(data.data);
+            })
+            .catch((error) => console.log(error));
         Echo.private(`App.Models.User.${props.channelId}`)
             .listen(".TodoCreated", (e) => {
-                setTodos((prevState) => [...prevState, e.model]);
+                setTodos((prevState) => {
+                    const state = [...prevState, e.model].sort((a, b) => {
+                        let date1 = new Date(`${a.date} ${a.time}`);
+                        let date2 = new Date(`${b.date} ${b.time}`);
+                        return date1 - date2;
+                    });
+                    return state;
+                });
             })
             .notification((notification) => {
                 markAsCompleted(notification);
             });
     }, []);
 
-    function addTodo(todoItem) {
+    const addTodo = useCallback((todoItem) => {
         event.preventDefault();
-        axios.post("/api/todos", todoItem).then(() => {});
-    }
+        return axios
+            .post("/api/todos", todoItem)
+            .catch((error) => console.log(error));
+    }, []);
 
-    function removeTodo(todoId) {
+    const removeTodo = useCallback((todoId) => {
         setTodos((prevState) =>
             [...prevState].filter((todo) => todo.id != todoId)
         );
-    }
+    }, []);
 
-    function editTodo({ id, title, text, date, time }) {
+    const editTodo = useCallback(({ id, title, text, date, time }) => {
         setTodos((prevState) =>
             prevState.map((todo) => {
                 if (todo.id == id) {
@@ -63,7 +79,7 @@ const TodoList = (props) => {
                 return todo;
             })
         );
-    }
+    }, []);
 
     return (
         <div className="flex flex-col">

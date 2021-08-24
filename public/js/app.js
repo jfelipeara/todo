@@ -10602,10 +10602,13 @@ function App() {
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.Fragment, {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)((react_notifications_component__WEBPACK_IMPORTED_MODULE_4___default()), {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
       className: "flex bg-white w-1/3  border-solid  border-2 border-gray-200 rounded-md justify-content-center",
-      children: user ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_components_TodoList__WEBPACK_IMPORTED_MODULE_7__.default, {
-        channelId: user.id
-      }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_components_Login__WEBPACK_IMPORTED_MODULE_6__.default, {
-        login: login
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)("div", {
+        className: "w-100",
+        children: user ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_components_TodoList__WEBPACK_IMPORTED_MODULE_7__.default, {
+          channelId: user.id
+        }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_8__.jsx)(_components_Login__WEBPACK_IMPORTED_MODULE_6__.default, {
+          login: login
+        })
       })
     })]
   });
@@ -10702,6 +10705,7 @@ var InputToggle = function InputToggle(props) {
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
     children: !props.isEditing ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
+      className: props.classes,
       children: props.data
     }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
       type: props.type,
@@ -10783,28 +10787,38 @@ var login = function login(props) {
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("form", {
     action: "",
     onSubmit: handleSubmit,
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
-      htmlFor: "email",
-      children: "Email"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
-      type: "email",
-      name: "email",
-      value: email,
-      onChange: function onChange(e) {
-        return setEmail(e.target.value);
-      }
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
-      htmlFor: "password"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
-      type: "password",
-      name: "password",
-      value: password,
-      onChange: function onChange(e) {
-        return setPassword(e.target.value);
-      }
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
-      type: "submit",
-      children: "Login"
+    className: "p-4",
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+      className: "flex mb-2",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+        className: "border border-gray-500 w-100 rounded-md",
+        type: "email",
+        name: "email",
+        value: email,
+        onChange: function onChange(e) {
+          return setEmail(e.target.value);
+        },
+        placeholder: "Email"
+      })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+      className: "flex mb-2",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+        className: "border border-gray-500 w-100 rounded-md",
+        type: "password",
+        name: "password",
+        value: password,
+        onChange: function onChange(e) {
+          return setPassword(e.target.value);
+        },
+        placeholder: "password"
+      })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+      className: "flex justify-end",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
+        className: "bg-blue-600 hover:bg-blue-700 focus:outline-none px-2 text-white rounded-md",
+        type: "submit",
+        children: "Login"
+      })
     })]
   });
 };
@@ -10897,59 +10911,77 @@ var Todo = function Todo(_ref) {
   }
 
   function deleteTodo() {
-    removeTodo(todo.id);
     axios__WEBPACK_IMPORTED_MODULE_0___default().delete("api/todos/".concat(todo.id)).then(function () {
       return removeTodo(todo.id);
     });
   }
 
+  function getButtons() {
+    if (todo.isComplete) {
+      return;
+    } else {
+      if (isEditing) {
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+            type: "button",
+            onClick: function onClick() {
+              return setIsEditing(false);
+            },
+            className: "bg-red-600 hover:bg-red-700 focus:outline-none px-2 text-white rounded-md",
+            children: "Cancel"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+            type: "button",
+            onClick: updateTodo,
+            className: "bg-blue-600 hover:bg-blue-700 focus:outline-none px-2 text-white rounded-md",
+            children: "Update"
+          })]
+        });
+      } else {
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+          type: "button",
+          onClick: deleteTodo,
+          className: "bg-red-500 hover:bg-red-700 focus:outline-none px-2 text-white rounded-md",
+          children: "Delete"
+        });
+      }
+    }
+  }
+
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("li", {
     onDoubleClick: function onDoubleClick() {
-      return setIsEditing(true);
+      return !todo.isComplete && setIsEditing(true);
     },
     className: "p-4 ".concat(todo.isComplete ? "bg-green-100" : ""),
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_InputToggle__WEBPACK_IMPORTED_MODULE_2__.default, {
       isEditing: isEditing,
       setData: setTitle,
       data: title,
-      type: "text"
+      type: "text",
+      classes: "font-bold"
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_InputToggle__WEBPACK_IMPORTED_MODULE_2__.default, {
       isEditing: isEditing,
       setData: setText,
       data: text,
-      type: "text"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_InputToggle__WEBPACK_IMPORTED_MODULE_2__.default, {
-      isEditing: isEditing,
-      setData: setDate,
-      data: date,
-      type: "date"
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_InputToggle__WEBPACK_IMPORTED_MODULE_2__.default, {
-      isEditing: isEditing,
-      setData: setTime,
-      data: time,
-      type: "time"
+      type: "text",
+      classes: "font-semibold"
+    }), isEditing && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_InputToggle__WEBPACK_IMPORTED_MODULE_2__.default, {
+        isEditing: true,
+        setData: setDate,
+        data: date,
+        type: "date"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_InputToggle__WEBPACK_IMPORTED_MODULE_2__.default, {
+        isEditing: true,
+        setData: setTime,
+        data: time,
+        type: "time"
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      className: "font-medium",
+      children: todo.user.name
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
       className: "flex mt-2 ".concat(isEditing ? "justify-between" : "justify-end"),
-      children: isEditing ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
-          type: "button",
-          onClick: function onClick() {
-            return setIsEditing(false);
-          },
-          className: "bg-blue-600 hover:bg-blue-700 focus:outline-none px-2 text-white rounded-md",
-          children: "Cancel"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
-          type: "button",
-          onClick: updateTodo,
-          className: "bg-purple-600 hover:bg-purple-700 focus:outline-none px-2 text-white rounded-md",
-          children: "Update"
-        })]
-      }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
-        type: "button",
-        onClick: deleteTodo,
-        className: "bg-red-500 hover:bg-red-700 focus:outline-none px-2 text-white rounded-md",
-        children: "Delete"
-      })
+      children: getButtons()
     })]
   });
 };
@@ -11015,38 +11047,74 @@ var TodoForm = function TodoForm(props) {
       text: text,
       date: date,
       time: time
+    }).then(function () {
+      setTitle("");
+      setText("");
+      setDate("");
+      setTime("");
+    })["catch"](function (error) {
+      return console.log(error);
     });
   }
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("form", {
     onSubmit: handleSubmit,
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
-      type: "text",
-      value: title,
-      onChange: function onChange(e) {
-        return setTitle(e.target.value);
-      }
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
-      type: "text",
-      value: text,
-      onChange: function onChange(e) {
-        return setText(e.target.value);
-      }
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
-      type: "date",
-      value: date,
-      onChange: function onChange(e) {
-        return setDate(e.target.value);
-      }
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
-      type: "time",
-      value: time,
-      onChange: function onChange(e) {
-        return setTime(e.target.value);
-      }
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
-      type: "submit",
-      children: "Save"
+    className: "p-4",
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+      className: "flex mb-2",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+        className: "border border-gray-500 w-100 rounded-md",
+        name: "title",
+        type: "text",
+        value: title,
+        onChange: function onChange(e) {
+          return setTitle(e.target.value);
+        },
+        placeholder: "Title"
+      })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("textarea", {
+        name: "text",
+        className: "border border-gray-500 w-100 rounded-md",
+        value: text,
+        onChange: function onChange(e) {
+          return setText(e.target.value);
+        },
+        placeholder: "Text"
+      })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
+        className: "mr-2",
+        htmlFor: "date",
+        children: "Date"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+        name: "date",
+        type: "date",
+        value: date,
+        onChange: function onChange(e) {
+          return setDate(e.target.value);
+        }
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
+        className: "mr-2",
+        htmlFor: "time",
+        children: "Time"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+        name: "time",
+        type: "time",
+        value: time,
+        onChange: function onChange(e) {
+          return setTime(e.target.value);
+        }
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+      className: "flex justify-end",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("button", {
+        className: "bg-blue-600 hover:bg-blue-700 focus:outline-none px-2 text-white rounded-md",
+        type: "submit",
+        children: "Add"
+      })
     })]
   });
 };
@@ -11125,35 +11193,46 @@ var TodoList = function TodoList(props) {
         animationIn: ["animate__animated", "animate__fadeIn"],
         animationOut: ["animate__animated", "animate__fadeOut"]
       });
+      axios.post("api/notifications", {
+        id: data.id
+      })["catch"](function (error) {
+        return console.log(error);
+      });
     };
 
     axios.get("/api/todos").then(function (_ref) {
       var data = _ref.data;
       setTodos(data.data);
+    })["catch"](function (error) {
+      return console.log(error);
     });
     Echo["private"]("App.Models.User.".concat(props.channelId)).listen(".TodoCreated", function (e) {
       setTodos(function (prevState) {
-        return [].concat(_toConsumableArray(prevState), [e.model]);
+        var state = [].concat(_toConsumableArray(prevState), [e.model]).sort(function (a, b) {
+          var date1 = new Date("".concat(a.date, " ").concat(a.time));
+          var date2 = new Date("".concat(b.date, " ").concat(b.time));
+          return date1 - date2;
+        });
+        return state;
       });
     }).notification(function (notification) {
       markAsCompleted(notification);
     });
   }, []);
-
-  function addTodo(todoItem) {
+  var addTodo = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(function (todoItem) {
     event.preventDefault();
-    axios.post("/api/todos", todoItem).then(function () {});
-  }
-
-  function removeTodo(todoId) {
+    return axios.post("/api/todos", todoItem)["catch"](function (error) {
+      return console.log(error);
+    });
+  }, []);
+  var removeTodo = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(function (todoId) {
     setTodos(function (prevState) {
       return _toConsumableArray(prevState).filter(function (todo) {
         return todo.id != todoId;
       });
     });
-  }
-
-  function editTodo(_ref2) {
+  }, []);
+  var editTodo = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(function (_ref2) {
     var id = _ref2.id,
         title = _ref2.title,
         text = _ref2.text,
@@ -11171,8 +11250,7 @@ var TodoList = function TodoList(props) {
         return todo;
       });
     });
-  }
-
+  }, []);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
     className: "flex flex-col",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_TodoForm__WEBPACK_IMPORTED_MODULE_3__.default, {

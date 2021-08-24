@@ -40,11 +40,13 @@ function App() {
         <>
             <ReactNotification />
             <div className="flex bg-white w-1/3  border-solid  border-2 border-gray-200 rounded-md justify-content-center">
-                {user ? (
-                    <TodoList channelId={user.id} />
-                ) : (
-                    <Login login={login} />
-                )}
+                <div className="w-100">
+                    {user ? (
+                        <TodoList channelId={user.id} />
+                    ) : (
+                        <Login login={login} />
+                    )}
+                </div>
             </div>
         </>
     );

@@ -17,22 +17,35 @@ const login = (props) => {
     }
 
     return (
-        <form action="" onSubmit={handleSubmit}>
-            <label htmlFor="email">Email</label>
-            <input
-                type="email"
-                name="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-            />
-            <label htmlFor="password"></label>
-            <input
-                type="password"
-                name="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            />
-            <button type="submit">Login</button>
+        <form action="" onSubmit={handleSubmit} className="p-4">
+            <div className="flex mb-2">
+                <input
+                    className="border border-gray-500 w-100 rounded-md"
+                    type="email"
+                    name="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Email"
+                />
+            </div>
+            <div className="flex mb-2">
+                <input
+                    className="border border-gray-500 w-100 rounded-md"
+                    type="password"
+                    name="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="password"
+                />
+            </div>
+            <div className="flex justify-end">
+                <button
+                    className="bg-blue-600 hover:bg-blue-700 focus:outline-none px-2 text-white rounded-md"
+                    type="submit"
+                >
+                    Login
+                </button>
+            </div>
         </form>
     );
 };

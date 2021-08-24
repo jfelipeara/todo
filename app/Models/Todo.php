@@ -39,6 +39,9 @@ class Todo extends Model
      */
     public function broadcastOn($event)
     {
-        return [$this, $this->user];
+        return match($event) {
+            'deleted' => [],
+            default => [$this, $this->user],
+        };
     }
 }

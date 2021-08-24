@@ -15,7 +15,7 @@ class TodoController extends Controller
      */
     public function index()
     {
-        return new TodoCollection(Todo::all());
+        return new TodoCollection(Todo::query()->orderByRaw("CONCAT(date, ' ', time) ASC")->get());
     }
 
     /**
@@ -91,5 +91,6 @@ class TodoController extends Controller
     public function destroy(Todo $todo)
     {
         $todo->delete();
+        return response()->json();
     }
 }

@@ -9,7 +9,7 @@ const InputToggle = (props) => {
     return (
         <div>
             {!props.isEditing ? (
-                <span>{props.data}</span>
+                <span className={props.classes}>{props.data}</span>
             ) : (
                 <input
                     type={props.type}
