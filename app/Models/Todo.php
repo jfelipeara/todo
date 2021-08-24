@@ -11,6 +11,13 @@ class Todo extends Model
     use HasFactory, BroadcastsEvents;
 
     /**
+     * The relationships that should always be loaded.
+     *
+     * @var array
+     */
+    protected $with = ['user'];
+
+    /**
      * The attributes that aren't mass assignable.
      *
      * @var array
@@ -39,9 +46,10 @@ class Todo extends Model
      */
     public function broadcastOn($event)
     {
+        $channels = User::all()->push($this);
         return match($event) {
             'deleted' => [],
-            default => [$this, $this->user],
+            default => $channels,
         };
     }
 }
