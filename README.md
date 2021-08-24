@@ -1,6 +1,5 @@
 ## Project
-copy .env.example to .env
-Remmeber to change the timezone in config/app
+copy .env.example to .env <br> Remeber to change the timezone in config/app <br>
 this project uses laravel sail, install everything as follows:
 ``` 
 docker run --rm \
